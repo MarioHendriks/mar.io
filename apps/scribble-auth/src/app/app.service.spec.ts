@@ -14,9 +14,9 @@ describe('AppService', () => {
   });
 
   describe('getData', () => {
-    it('should return "Welcome to scribble-backend!"', () => {
+    it('should return "Welcome to scribble-auth!"', () => {
       expect(service.getData()).toEqual({
-        message: 'Welcome to scribble-backend!',
+        message: 'Welcome to scribble-auth!',
       });
     });
   });

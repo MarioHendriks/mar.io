@@ -5,20 +5,24 @@
   },
   "defaultProject": "scribble-backend",
   "projects": {
-    "scribble-backend": {
-      "root": "apps/scribble-backend",
-      "sourceRoot": "apps/scribble-backend/src",
+    "scribble-mail": {
+      "root": "apps/scribble-mail",
+      "sourceRoot": "apps/scribble-mail/src",
       "projectType": "application",
-      "prefix": "scribble-backend",
+      "prefix": "scribble-mail",
       "targets": {
         "build": {
           "executor": "@nrwl/node:build",
-          "outputs": ["{options.outputPath}"],
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
-            "outputPath": "dist/apps/scribble-backend",
-            "main": "apps/scribble-backend/src/main.ts",
-            "tsConfig": "apps/scribble-backend/tsconfig.app.json",
-            "assets": ["apps/scribble-backend/src/assets"]
+            "outputPath": "dist/apps/scribble-mail",
+            "main": "apps/scribble-mail/src/main.ts",
+            "tsConfig": "apps/scribble-mail/tsconfig.app.json",
+            "assets": [
+              "apps/scribble-mail/src/assets"
+            ]
           },
           "configurations": {
             "production": {
@@ -27,8 +31,8 @@
               "inspect": false,
               "fileReplacements": [
                 {
-                  "replace": "apps/scribble-backend/src/environments/environment.ts",
-                  "with": "apps/scribble-backend/src/environments/environment.prod.ts"
+                  "replace": "apps/scribble-mail/src/environments/environment.ts",
+                  "with": "apps/scribble-mail/src/environments/environment.prod.ts"
                 }
               ]
             }
@@ -37,20 +41,108 @@
         "serve": {
           "executor": "@nrwl/node:execute",
           "options": {
-            "buildTarget": "scribble-backend:build"
+            "buildTarget": "scribble-mail:build"
           }
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/scribble-backend/**/*.ts"]
+            "lintFilePatterns": [
+              "apps/scribble-mail/**/*.ts"
+            ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/scribble-backend"],
+          "outputs": [
+            "coverage/apps/scribble-mail"
+          ],
           "options": {
-            "jestConfig": "apps/scribble-backend/jest.config.js",
+            "jestConfig": "apps/scribble-mail/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "models": {
+      "root": "libs/models",
+      "sourceRoot": "libs/models/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/models/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/models"
+          ],
+          "options": {
+            "jestConfig": "libs/models/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "scribble-auth": {
+      "root": "apps/scribble-auth",
+      "sourceRoot": "apps/scribble-auth/src",
+      "projectType": "application",
+      "prefix": "scribble-auth",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": [
+            "{options.outputPath}"
+          ],
+          "options": {
+            "outputPath": "dist/apps/scribble-auth",
+            "main": "apps/scribble-auth/src/main.ts",
+            "tsConfig": "apps/scribble-auth/tsconfig.app.json",
+            "assets": [
+              "apps/scribble-auth/src/assets"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/scribble-auth/src/environments/environment.ts",
+                  "with": "apps/scribble-auth/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "scribble-auth:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/scribble-auth/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/apps/scribble-auth"
+          ],
+          "options": {
+            "jestConfig": "apps/scribble-auth/jest.config.js",
             "passWithNoTests": true
           }
         }

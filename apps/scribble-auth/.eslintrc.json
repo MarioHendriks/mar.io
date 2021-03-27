@@ -4,9 +4,7 @@
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "parserOptions": {
-        "project": ["apps/scribble-backend/tsconfig.*?.json"]
-      },
+      "parserOptions": { "project": ["apps/scribble-auth/tsconfig.*?.json"] },
       "rules": {}
     },
     { "files": ["*.ts", "*.tsx"], "rules": {} },
