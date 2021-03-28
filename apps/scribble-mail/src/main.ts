@@ -1,21 +1,24 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
 
-import { Logger } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { AppModule } from './app.module';
 
-import { AppModule } from './app/app.module';
+  async function bootstrap() {
+    const app = await NestFactory.create(AppModule);
+    app.connectMicroservice<MicroserviceOptions>({
+      transport: Transport.REDIS,
+      options: {
+        url: 'redis://localhost:6379',
+        auth_pass: new ConfigService().get<string>("REDIS_SECRET")
+      }
+    });
+    app.useGlobalPipes(new ValidationPipe());
+    app.enableCors()
+    await app.startAllMicroservicesAsync();
+    await app.listen(3001);
+    console.log(`mail-scribble service is running on: ${await app.getUrl()}`)
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  const globalPrefix = 'api';
-  app.setGlobalPrefix(globalPrefix);
-  const port = process.env.PORT || 3334;
-  await app.listen(port, () => {
-    Logger.log('Listening at http://localhost:' + port + '/' + globalPrefix);
-  });
-}
-
-bootstrap();
+  }
+  bootstrap();

@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@mar.io/models": ["libs/models/src/index.ts"]
+      "@mar.io/models": ["libs/models/src/index.ts"],
+      "@mar.io/exceptions": ["libs/exceptions/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

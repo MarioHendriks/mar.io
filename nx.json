@@ -23,6 +23,7 @@
   "projects": {
     "scribble-mail": { "tags": [] },
     "models": { "tags": [] },
-    "scribble-auth": { "tags": [] }
+    "scribble-auth": { "tags": [] },
+    "exceptions": { "tags": [] }
   }
 }

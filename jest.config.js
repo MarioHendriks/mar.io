@@ -4,5 +4,6 @@ module.exports = {
     '<rootDir>/apps/scribble-mail',
     '<rootDir>/libs/models',
     '<rootDir>/apps/scribble-auth',
+    '<rootDir>/libs/exceptions',
   ],
 };
