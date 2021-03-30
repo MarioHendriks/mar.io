@@ -5,5 +5,3 @@ export class InternalServerException extends HttpException {
         super(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
-
-export default InternalServerException;

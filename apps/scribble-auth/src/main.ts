@@ -5,8 +5,6 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { AuthModule } from './app/auth.module';
 
   async function bootstrap() {
-    const a = new ConfigService().get<string>('TYPEORM_ENTITIES')
-    console.log(a) 
     const app = await NestFactory.create(AuthModule);
     app.connectMicroservice<MicroserviceOptions>({
       transport: Transport.REDIS,

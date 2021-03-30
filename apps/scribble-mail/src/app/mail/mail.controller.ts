@@ -13,7 +13,7 @@ export class MailController {
 
   @MessagePattern('REGISTER_MAIL')
   public register(
-    @Payload() data: { email: string; username: string },
+    @Payload() data: { email: string; username: string, token: string },
     @Ctx() context: RedisContext,
   ): void {
     console.log(data);
@@ -27,3 +27,4 @@ export class MailController {
     // this.mailService.send(message.email, `Welcome ${message.firstname} ${message.lastname}`, 'user-registered.hbs', message)
   }
 }
+//maak resend functie

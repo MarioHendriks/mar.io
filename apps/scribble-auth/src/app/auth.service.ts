@@ -6,15 +6,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as jwt from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
 
-import {Authenticated} from '../../../../libs/models/src/' //TODO fix this with @mar.io/models
-import {RegisterRequest} from '../../../../libs/models/src/' //TODO fix this with @mar.io/models
-import {AuthDTO} from '../../../../libs/models/src/' //TODO fix this with @mar.io/models
-import {AuthViewmodel} from '../../../../libs/models/src/' //TODO fix this with @mar.io/models
-import {LoginRequest} from '../../../../libs/models/src/' //TODO fix this with @mar.io/models
-import {UnauthorizedException} from '../../../../libs/exceptions/src' //TODO fix this with @mar.io/exceptions
+import { AccountStatus, Authenticated, VerifyRequest } from '@mar.io/models';
+import { RegisterRequest } from '@mar.io/models';
+import { AuthDTO } from '@mar.io/models';
+import { AuthViewmodel } from '@mar.io/models';
+import { LoginRequest } from '@mar.io/models';
+import { UnauthorizedException } from '@mar.io/exceptions';
 import { Auth } from '../database/auth.entity';
-
-
 
 @Injectable()
 export class AuthService {
@@ -22,7 +20,7 @@ export class AuthService {
   constructor(
     @InjectRepository(Auth)
     private authRepository: Repository<Auth>,
-    private configService: ConfigService,
+    private configService: ConfigService
   ) {
     this.jtwSecret = configService.get<string>('JWT_SECRET');
   }
@@ -34,7 +32,7 @@ export class AuthService {
     const authEntity: AuthDTO = {
       username: req.username,
       password: hash,
-      email: req.email
+      email: req.email,
     };
 
     return await this.authRepository.save(authEntity);
@@ -46,12 +44,12 @@ export class AuthService {
         username: res.username,
         role: res.role,
         accountStatus: res.accountStatus,
-        email: res.email
+        email: res.email,
       },
       this.jtwSecret,
       {
         expiresIn: 60 * 60,
-      },
+      }
     );
     const authVM: AuthViewmodel = {
       token: token,
@@ -62,18 +60,36 @@ export class AuthService {
     return authVM;
   }
 
-  async login(req: LoginRequest): Promise<AuthViewmodel>{
-    const user = await this.authRepository.findOne({
+  async login(req: LoginRequest): Promise<AuthViewmodel> {
+    const user = (await this.authRepository.findOne({
       where: {
-        username: req.username
-      }
-    }) as Authenticated
+        username: req.username,
+      },
+    })) as Authenticated;
 
-    if(!user) throw new UnauthorizedException("Invalid credentials")
+    if (!user) throw new UnauthorizedException('Invalid credentials');
 
-    if(!(await bcrypt.compare(req.password, user.password)))
-      throw new UnauthorizedException("Invalid credentials")
+    if (!(await bcrypt.compare(req.password, user.password)))
+      throw new UnauthorizedException('Invalid credentials');
 
-    return await this.forgeJWT(user)
+    return await this.forgeJWT(user);
+  }
+
+  async verify(req: VerifyRequest): Promise<AuthViewmodel> {
+    const deCrypted: any = await jwt.decode(req.token);
+    const user = await this.authRepository
+      .findOne({
+        where: {
+          username: deCrypted.username,
+        },
+      })
+      .then(async (res: any) => {
+        console.log(res)
+        res.accountStatus = AccountStatus.activated;
+        await this.authRepository.update(res.id, res)
+        return res 
+      });
+
+    return await this.forgeJWT(user);
   }
 }

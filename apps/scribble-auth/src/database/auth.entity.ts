@@ -1,7 +1,7 @@
 
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
-import {AccountStatus} from '../../../../libs/models/src/' //TODO fix this with @mar.io/models
-import {Roles} from '../../../../libs/models/src/' //TODO fix this with @mar.io/models
+import {AccountStatus} from "@mar.io/models" 
+import {Roles} from "@mar.io/models" 
 
 @Entity("Auth")
 export class Auth {

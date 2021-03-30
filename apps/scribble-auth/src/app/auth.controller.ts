@@ -1,10 +1,10 @@
-import { Body, Controller, Inject, Post } from '@nestjs/common';
+import { Body, Controller, Inject, Patch, Post } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import {RegisterRequest} from '../../../../libs/models/src/' //TODO fix this with @mar.io/models
-import {AuthViewmodel} from '../../../../libs/models/src/' //TODO fix this with @mar.io/models
-import {LoginRequest} from '../../../../libs/models/src/' //TODO fix this with @mar.io/models
+import {RegisterRequest, VerifyRequest} from '@mar.io/models'
+import {AuthViewmodel} from '@mar.io/models'
+import {LoginRequest} from '@mar.io/models'
 
-import {BadRequestException} from '../../../../libs/exceptions/src' //TODO fix this with @mar.io/exceptions
+import {BadRequestException} from '@mar.io/exceptions'
 import { AuthService } from './auth.service';
 
 const typeOrmErr = {
@@ -25,11 +25,12 @@ export class AuthController {
 
     return this.authService
       .register(req)
-      .then((res) => {
-        const authViewModel = this.authService.forgeJWT(res);
+      .then(async (res) => {
+        const authViewModel = await this.authService.forgeJWT(res);
         const mailobject = {
           email: res.email,
-          username: res.username
+          username: res.username,
+          token: authViewModel.token
         }
         this.client.send<string,object>("REGISTER_MAIL", mailobject).toPromise();
         return authViewModel;
@@ -53,6 +54,19 @@ export class AuthController {
     return await this.authService
       .login(req)
       .then((res) => {
+        return res;
+      })
+      .catch((err) => {
+        throw err;
+      });
+  }
+
+  @Patch('/verify')
+  public async verify(@Body() req: VerifyRequest): Promise<AuthViewmodel> {
+    return await this.authService
+      .verify(req)
+      .then((res) => {
+        console.log(res)
         return res;
       })
       .catch((err) => {
