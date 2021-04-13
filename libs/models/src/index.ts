@@ -7,4 +7,5 @@ export * from './lib/auth/enums/AccountStatus';
 export * from './lib/auth/enums/Roles';
 export * from './lib/auth/Verify.Request'
 export * from './lib/mail/message';
+export * from './lib/profile/getProfile.request'
 
