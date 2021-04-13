@@ -25,6 +25,7 @@
     "models": { "tags": [] },
     "scribble-auth": { "tags": [] },
     "exceptions": { "tags": [] },
-    "profile-service": { "tags": [] }
+    "profile-service": { "tags": [] },
+    "authorization": { "tags": [] }
   }
 }

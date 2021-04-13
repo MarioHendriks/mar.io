@@ -231,6 +231,31 @@
           }
         }
       }
+    },
+    "authorization": {
+      "root": "libs/authorization",
+      "sourceRoot": "libs/authorization/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/authorization/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/authorization"
+          ],
+          "options": {
+            "jestConfig": "libs/authorization/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }

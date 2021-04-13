@@ -6,5 +6,6 @@ module.exports = {
     '<rootDir>/apps/scribble-auth',
     '<rootDir>/libs/exceptions',
     '<rootDir>/apps/profile-service',
+    '<rootDir>/libs/authorization',
   ],
 };
