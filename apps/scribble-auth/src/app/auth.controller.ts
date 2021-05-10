@@ -6,6 +6,7 @@ import {LoginRequest} from '@mar.io/models'
 
 import {BadRequestException} from '@mar.io/exceptions'
 import { AuthService } from './auth.service';
+import { ProfileViewmodel } from 'libs/models/src/lib/profile/ProfileViewmodel';
 
 const typeOrmErr = {
   DUPE_ENTRY: 23505,
@@ -44,7 +45,6 @@ export class AuthController {
 
           message = `this ${errorKey} is already in use.`;
         }
-
         throw new BadRequestException(message);
       });
   }
@@ -54,7 +54,10 @@ export class AuthController {
     return await this.authService
       .login(req)
       .then((res) => {
-        return res;
+        return this.client.send<string,object>('GET_PROFILE', res).toPromise().then(profile =>{
+          res.profile = profile as unknown as ProfileViewmodel
+          return res
+        });
       })
       .catch((err) => {
         throw err;
@@ -66,7 +69,7 @@ export class AuthController {
     return await this.authService
       .verify(req)
       .then((res) => {
-        console.log(res)
+        this.client.send<string,string>("GET_PROFILE", res.token).toPromise();
         return res;
       })
       .catch((err) => {

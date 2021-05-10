@@ -1,21 +1,18 @@
 import { Controller, Get, Inject } from '@nestjs/common';
 import { ClientProxy, Ctx, MessagePattern, Payload, RedisContext } from '@nestjs/microservices';
-import {GetProfile} from '@mar.io/models'
 import { ProfileService } from './profile.service';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Profile } from '../database/profile.entity';
-import { Repository } from 'typeorm';
+import {AuthViewmodel} from '@mar.io/models'
+import { ProfileViewmodel } from 'libs/models/src/lib/profile/ProfileViewmodel';
+
 
 @Controller()
-export class ProfileController {
-  constructor(private readonly profileService: ProfileService,
-    @Inject('PROFILE_SERVICE') private client: ClientProxy){}
+export class ProfileRedisController {
+  constructor(private readonly profileService: ProfileService){}
 
     @MessagePattern('GET_PROFILE')
-    public register(
-      @Payload() profile: GetProfile,
-      @Ctx() context: RedisContext,){
-          
-    return this.profileService.getProfile(profile);
+    public getProfile(
+      @Payload() authVM: AuthViewmodel,
+      @Ctx() context: RedisContext): Promise<ProfileViewmodel>{
+    return this.profileService.getProfile(authVM.token);
   }
 }

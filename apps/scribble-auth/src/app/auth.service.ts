@@ -41,6 +41,7 @@ export class AuthService {
   async forgeJWT(res: Authenticated): Promise<AuthViewmodel> {
     var token = jwt.sign(
       {
+        id: res.id,
         username: res.username,
         role: res.role,
         accountStatus: res.accountStatus,
@@ -56,6 +57,7 @@ export class AuthService {
       username: res.username,
       role: res.role,
       accountStatus: res.accountStatus,
+      profile: undefined
     };
     return authVM;
   }
@@ -84,7 +86,6 @@ export class AuthService {
         },
       })
       .then(async (res: any) => {
-        console.log(res)
         res.accountStatus = AccountStatus.activated;
         await this.authRepository.update(res.id, res)
         return res 

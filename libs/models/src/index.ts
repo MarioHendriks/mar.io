@@ -7,5 +7,6 @@ export * from './lib/auth/enums/AccountStatus';
 export * from './lib/auth/enums/Roles';
 export * from './lib/auth/Verify.Request'
 export * from './lib/mail/message';
-export * from './lib/profile/getProfile.request'
-
+export * from './lib/profile/profile.DTO'
+export * from './lib/scribble/ScribbleViewmodel';
+export * from './lib/scribble/Scribble.DTO'

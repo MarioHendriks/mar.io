@@ -1,16 +1,21 @@
 
-import { Entity, Column, CreateDateColumn, PrimaryColumn } from 'typeorm';
+import { IsUUID } from 'class-validator';
+import { Entity, Column, CreateDateColumn, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity("profile")
 export class Profile {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id: number;
+
+
+  @Column({unique: true})
+  userID: number;
 
   @Column()
   bio: string;
 
   @Column()
-  age: string;
+  age: number;
 
   @Column({nullable: false})
   photo!: string;

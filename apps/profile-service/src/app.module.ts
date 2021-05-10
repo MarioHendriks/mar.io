@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { ConfigService, ConfigModule } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import Joi from 'joi';
+import * as Joi from 'joi';
 
 import { ProfileController } from './app/profile.controller';
+import { ProfileRedisController } from './app/profile.redis.controller';
 import { ProfileService } from './app/profile.service';
 import { Profile } from './database/profile.entity';
 
@@ -21,11 +22,11 @@ import { Profile } from './database/profile.entity';
   ]),
   TypeOrmModule.forRoot({
     type: 'postgres',
-    host: new ConfigService().get<string>('TYPEORM_HOST_2'),
-    port: +new ConfigService().get<string>('TYPEORM_PORT_2'),
-    username: new ConfigService().get<string>('TYPEORM_USERNAME_2'),
-    password: new ConfigService().get<string>('TYPEORM_PASSWORD_2'),
-    database: new ConfigService().get<string>('TYPEORM_DATABASE_2'),
+    host: new ConfigService().get<string>('TYPEORM_HOST'),
+    port: +new ConfigService().get<string>('TYPEORM_PORT'),
+    username: new ConfigService().get<string>('TYPEORM_USERNAME'),
+    password: new ConfigService().get<string>('TYPEORM_PASSWORD'),
+    database: new ConfigService().get<string>('TYPEORM_DATABASE'),
     entities: [Profile],
     synchronize: true,
   }),
@@ -35,11 +36,11 @@ import { Profile } from './database/profile.entity';
       NODE_ENV: Joi.string()
       .valid('development', 'production', 'test', 'provision')
       .default('development'),
-      TYPEORM_HOST_1: Joi.string().required().default('127.0.0.1'),
-      TYPEORM_USERNAME_1: Joi.string().required(),
-      TYPEORM_PASSWORD_1: Joi.string().required(),
-      TYPEORM_DATABASE_1: Joi.string().required().default('profile'),
-      TYPEORM_PORT_1: Joi.number().required().default(false),
+      TYPEORM_HOST: Joi.string().required().default('127.0.0.1'),
+      TYPEORM_USERNAME: Joi.string().required(),
+      TYPEORM_PASSWORD: Joi.string().required(),
+      TYPEORM_DATABASE: Joi.string().required().default('profile'),
+      TYPEORM_PORT: Joi.number().required().default(false),
       TYPEORM_SYNCHRONIZE: Joi.bool().required().default(false),
       TYPEORM_LOGGING: Joi.bool().required().default(false),
       TYPEORM_MIGRATIONS_RUN: Joi.bool().required().default(false),
@@ -49,7 +50,7 @@ import { Profile } from './database/profile.entity';
     }),
   }),
 ],
-  controllers: [ProfileController],
+  controllers: [ProfileController, ProfileRedisController],
   providers: [ProfileService],
 })
 export class AppModule {}

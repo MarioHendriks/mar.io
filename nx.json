@@ -26,6 +26,7 @@
     "scribble-auth": { "tags": [] },
     "exceptions": { "tags": [] },
     "profile-service": { "tags": [] },
-    "authorization": { "tags": [] }
+    "authorization": { "tags": [] },
+    "scribble-service": { "tags": [] }
   }
 }
