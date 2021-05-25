@@ -8,5 +8,6 @@ module.exports = {
     '<rootDir>/apps/profile-service',
     '<rootDir>/libs/authorization',
     '<rootDir>/apps/scribble-service',
+    '<rootDir>/apps/scribble-trends',
   ],
 };

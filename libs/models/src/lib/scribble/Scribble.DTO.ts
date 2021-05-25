@@ -1,4 +1,5 @@
-export class ScribbleDTO{
-    token: string
-    scribbleText: string
+export class ScribbleDTO  {
+    scribbleText: string;
+    token: string;
+    hashtags: string[]
 }

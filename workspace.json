@@ -315,6 +315,65 @@
           }
         }
       }
+    },
+    "scribble-trends": {
+      "root": "apps/scribble-trends",
+      "sourceRoot": "apps/scribble-trends/src",
+      "projectType": "application",
+      "prefix": "scribble-trends",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": [
+            "{options.outputPath}"
+          ],
+          "options": {
+            "outputPath": "dist/apps/scribble-trends",
+            "main": "apps/scribble-trends/src/main.ts",
+            "tsConfig": "apps/scribble-trends/tsconfig.app.json",
+            "assets": [
+              "apps/scribble-trends/src/assets"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/scribble-trends/src/environments/environment.ts",
+                  "with": "apps/scribble-trends/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "scribble-trends:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/scribble-trends/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/apps/scribble-trends"
+          ],
+          "options": {
+            "jestConfig": "apps/scribble-trends/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   }
 }

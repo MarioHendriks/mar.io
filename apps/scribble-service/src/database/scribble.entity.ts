@@ -5,7 +5,9 @@ export class Scribble{
     @PrimaryGeneratedColumn()
     id: number;
   
-  
+    @Column({default: [], type: "simple-array"})
+    trendIDs: string[]
+
     @Column()
     userID: number;
   

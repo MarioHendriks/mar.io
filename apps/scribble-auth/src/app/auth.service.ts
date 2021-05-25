@@ -93,4 +93,17 @@ export class AuthService {
 
     return await this.forgeJWT(user);
   }
+
+ async getAuthById(id: Number) {
+  const user = await this.authRepository
+  .findOne({
+    where: {
+      id: id,
+    },
+  })
+  .then(async (res: any) => {
+    return res 
+  });
+    return await this.forgeJWT(user);
+  }
 }

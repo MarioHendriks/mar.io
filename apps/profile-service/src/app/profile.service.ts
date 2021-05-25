@@ -29,6 +29,18 @@ export class ProfileService {
     })
   }
 
+  async getProfileById(id: number): Promise<ProfileViewmodel> {
+   return this.profileRepository.findOne({where: {
+     userID: id
+   }}).then((res) =>{
+      return res as ProfileViewmodel
+    }).catch((err) =>{
+      console.log(err)
+      throw new InternalServerException(err) 
+    })
+  }
+
+
   async postProfile(profileDTO: ProfileDTO): Promise<ProfileViewmodel> {
     const deCrypted:any = await jwt.decode(profileDTO.token)
     if(!deCrypted)

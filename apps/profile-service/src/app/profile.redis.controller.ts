@@ -15,4 +15,11 @@ export class ProfileRedisController {
       @Ctx() context: RedisContext): Promise<ProfileViewmodel>{
     return this.profileService.getProfile(authVM.token);
   }
+
+  @MessagePattern('GET_PROFILE_BYID')
+  public getProfileByID(
+    @Payload() id: number,
+    @Ctx() context: RedisContext): Promise<ProfileViewmodel>{
+  return this.profileService.getProfileById(id);
+}
 }

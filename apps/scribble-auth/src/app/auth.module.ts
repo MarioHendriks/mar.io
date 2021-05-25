@@ -7,6 +7,7 @@ import { AuthService } from './auth.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { Auth } from '../database/auth.entity';
 import * as path from 'path';
+import { AuthRedisController } from './auth.redis.controller';
 
 
 @Module({
@@ -51,7 +52,7 @@ import * as path from 'path';
       }),
     }),
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, AuthRedisController],
   providers: [AuthService],
 })
 export class AuthModule {}
