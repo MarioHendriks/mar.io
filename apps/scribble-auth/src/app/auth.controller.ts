@@ -1,10 +1,10 @@
 import { Body, Controller, Inject, Patch, Post } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import {RegisterRequest, VerifyRequest} from '@mar.io/models'
-import {AuthViewmodel} from '@mar.io/models'
-import {LoginRequest} from '@mar.io/models'
+import { RegisterRequest, VerifyRequest } from '@mar.io/models';
+import { AuthViewmodel } from '@mar.io/models';
+import { LoginRequest } from '@mar.io/models';
 
-import {BadRequestException} from '@mar.io/exceptions'
+import { BadRequestException } from '@mar.io/exceptions';
 import { AuthService } from './auth.service';
 import { ProfileViewmodel } from 'libs/models/src/lib/profile/ProfileViewmodel';
 
@@ -16,7 +16,7 @@ const typeOrmErr = {
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    @Inject('AUTH_SERVICE') private client: ClientProxy,
+    @Inject('AUTH_SERVICE') private client: ClientProxy
   ) {}
 
   @Post('/register')
@@ -31,9 +31,11 @@ export class AuthController {
         const mailobject = {
           email: res.email,
           username: res.username,
-          token: authViewModel.token
-        }
-        this.client.send<string,object>("REGISTER_MAIL", mailobject).toPromise();
+          token: authViewModel.token,
+        };
+        this.client
+          .send<string, object>('REGISTER_MAIL', mailobject)
+          .toPromise();
         return authViewModel;
       })
       .catch((err: { message: string; code: string; detail: string }) => {
@@ -54,10 +56,13 @@ export class AuthController {
     return await this.authService
       .login(req)
       .then((res) => {
-        return this.client.send<string,object>('GET_PROFILE', res).toPromise().then(profile =>{
-          res.profile = profile as unknown as ProfileViewmodel
-          return res
-        });
+        return this.client
+          .send<string, object>('GET_PROFILE', res)
+          .toPromise()
+          .then((profile) => {
+            res.profile = (profile as unknown) as ProfileViewmodel;
+            return res;
+          });
       })
       .catch((err) => {
         throw err;
@@ -69,7 +74,7 @@ export class AuthController {
     return await this.authService
       .verify(req)
       .then((res) => {
-        this.client.send<string,string>("GET_PROFILE", res.token).toPromise();
+        this.client.send<string, string>('GET_PROFILE', res.token).toPromise();
         return res;
       })
       .catch((err) => {
