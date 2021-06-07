@@ -15,4 +15,11 @@ export class AuthRedisController {
       @Ctx() context: RedisContext): Promise<AuthViewmodel>{
     return this.authService.getAuthById(id);
   }
+
+  @MessagePattern('GET_USER_BY_USERNAME')
+  public getProfileByName(
+    @Payload() name: string,
+    @Ctx() context: RedisContext): Promise<AuthViewmodel>{
+  return this.authService.getAuthByName(name);
+}
 }

@@ -57,7 +57,7 @@ export class AuthService {
       username: res.username,
       role: res.role,
       accountStatus: res.accountStatus,
-      profile: undefined
+      profile: undefined,
     };
     return authVM;
   }
@@ -87,23 +87,36 @@ export class AuthService {
       })
       .then(async (res: any) => {
         res.accountStatus = AccountStatus.activated;
-        await this.authRepository.update(res.id, res)
-        return res 
+        await this.authRepository.update(res.id, res);
+        return res;
       });
 
     return await this.forgeJWT(user);
   }
 
- async getAuthById(id: Number) {
-  const user = await this.authRepository
-  .findOne({
-    where: {
-      id: id,
-    },
-  })
-  .then(async (res: any) => {
-    return res 
-  });
+  async getAuthById(id: Number) {
+    const user = await this.authRepository
+      .findOne({
+        where: {
+          id: id,
+        },
+      })
+      .then(async (res: any) => {
+        return res;
+      });
+    return await this.forgeJWT(user);
+  }
+
+  async getAuthByName(name: string) {
+    const user = await this.authRepository
+      .findOne({
+        where: {
+          username: name,
+        },
+      })
+      .then(async (res: any) => {
+        return res;
+      });
     return await this.forgeJWT(user);
   }
 }

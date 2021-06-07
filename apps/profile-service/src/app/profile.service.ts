@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Profile } from '../database/profile.entity';
@@ -6,11 +6,13 @@ import * as jwt from 'jsonwebtoken';
 import {BadRequestException, InternalServerException} from '@mar.io/exceptions'
 import { ProfileViewmodel } from 'libs/models/src/lib/profile/ProfileViewmodel';
 import { ProfileDTO } from '@mar.io/models';
+import { ClientProxy } from '@nestjs/microservices';
 
 
 @Injectable()
 export class ProfileService {
   constructor(
+    @Inject('PROFILE_SERVICE') private client: ClientProxy,
     @InjectRepository(Profile)
     private profileRepository: Repository<Profile>
   ) { }
@@ -53,5 +55,24 @@ export class ProfileService {
       userID: deCrypted.id
     }
     return this.profileRepository.save(profile)
+  }
+
+  async getProfileByUsername(username: string): Promise<ProfileViewmodel | void> {
+    return await this.client
+    .send<string, string>('GET_USER_BY_USERNAME', username)
+    .toPromise()
+    .then(async (user: any) => {
+      const deCrypted:any = await jwt.decode(user.token);
+      console.log(deCrypted)
+      if(!deCrypted)
+      throw new BadRequestException('Incorrect request');
+      return this.getProfileById(deCrypted.id).then(res =>{
+        deCrypted.profile = res
+        return deCrypted
+      })
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   }
 }

@@ -170,4 +170,29 @@ export class ScribbleService {
      
     });
   }
+
+  async getScribblesByUsername(username: string, pageNumber: number){
+    const take = 10;
+    const skip = pageNumber * 10;
+   return await this.client
+        .send<string, string>('GET_USER_BY_USERNAME', username)
+        .toPromise()
+        .then(async (user: any) => {
+          const deCrypted:any = await jwt.decode(user.token);
+          console.log(deCrypted)
+          const [result, total] = await this.scribbleRepository.findAndCount({
+            take: take,
+            skip: skip,
+            order: { createdDate: 'DESC' },
+            where:{
+              userID: deCrypted.id
+            },
+          });
+      
+          return { data: result, count: total }; 
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  }
 }

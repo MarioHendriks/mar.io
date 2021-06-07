@@ -34,4 +34,10 @@ export class ProfileController {
         throw new BadRequestException(message);
       });
   }
+
+  @Get('/username/:username')
+  async getProfileByUsername(@Param('username') username: string){
+
+    return this.profileService.getProfileByUsername(username)
+  }
 }

@@ -4,8 +4,8 @@ import { Entity, Column, CreateDateColumn, PrimaryColumn, PrimaryGeneratedColumn
 
 @Entity("trend")
 export class Trend {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
 
   @Column({unique: true})

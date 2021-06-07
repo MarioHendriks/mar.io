@@ -47,6 +47,27 @@ export class ScribbleController {
       });
   }
 
+  @Get('/:username/:pagenumber')
+    getScribblesByUsername(@Param('username') username: string, @Param('pagenumber') pagenumber: number){
+      return this.scribbleService
+      .getScribblesByUsername(username, pagenumber)
+      .then((res) => {
+        return this.scribbleService.getAuths(res).then((auths) => {
+          return this.scribbleService.getProfiles(auths).then((profiles) => {
+            return this.scribbleService
+              .getTrendsByID(profiles)
+              .then((trends) => {
+                return this.scribbleService
+                  .getLikesByID(trends)
+                  .then((likes) => {
+                    return likes;
+                  });
+              });
+          });
+        });
+      });
+  }
+
   @Get('/trend/:trend')
   async getAllScribblesByTrend(@Param('trend') trend: string) {
     trend = '#' + trend;
