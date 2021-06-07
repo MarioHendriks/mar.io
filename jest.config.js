@@ -9,5 +9,6 @@ module.exports = {
     '<rootDir>/libs/authorization',
     '<rootDir>/apps/scribble-service',
     '<rootDir>/apps/scribble-trends',
+    '<rootDir>/apps/scribble-like',
   ],
 };

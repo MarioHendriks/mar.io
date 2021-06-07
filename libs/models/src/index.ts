@@ -11,3 +11,4 @@ export * from './lib/profile/profile.DTO'
 export * from './lib/scribble/ScribbleViewmodel';
 export * from './lib/scribble/Scribble.DTO'
 export * from './lib/trend/Trend.DTO'
+export * from './lib/like/Like.DTO'

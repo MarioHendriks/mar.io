@@ -27,12 +27,47 @@ export class TrendService {
       });
   }
 
+  async getTrendById(id: number): Promise<Trend> {
+    return await this.trendRepository
+    .findOne({
+      where: {
+        id: id,
+      },
+    })
+    .then(res => {
+    return res
+    }).catch(err => {
+      console.log(err)
+      throw err
+    });
+  }
+
   async createTrend(name: string): Promise<any>{
     const trend : TrendDTO = {
       trend: name
     }
      return await this.trendRepository.save(trend).then(res =>{
       return res
+    })
+  }
+
+  async updateTrendUse(trend: any): Promise<any> {
+    trend.uses++
+    this.trendRepository.save(trend).then(res => {
+      return res
+    }).catch(err => (
+      console.log(err)
+    ))
+  }
+
+  async getTrending(): Promise<Trend>{
+    return this.trendRepository.findAndCount({
+      order: {uses: 'DESC'},
+      take: 10
+    }).then(res =>{
+      return res[0]
+    }).catch(err =>{
+      return err
     })
   }
 }

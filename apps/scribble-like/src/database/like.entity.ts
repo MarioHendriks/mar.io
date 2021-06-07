@@ -2,17 +2,16 @@
 import { IsUUID } from 'class-validator';
 import { Entity, Column, CreateDateColumn, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity("trend")
-export class Trend {
+@Entity("like")
+export class Like {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column()
+  userID: number;
 
-  @Column({unique: true})
-  trend: string;
-
-  @Column({default: 0})
-  uses: number;
+  @Column()
+  scribbleID: number;
 
   @CreateDateColumn()
   createdDate: Date;

@@ -28,6 +28,7 @@
     "profile-service": { "tags": [] },
     "authorization": { "tags": [] },
     "scribble-service": { "tags": [] },
-    "scribble-trends": { "tags": [] }
+    "scribble-trends": { "tags": [] },
+    "scribble-like": { "tags": [] }
   }
 }

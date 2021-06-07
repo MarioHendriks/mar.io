@@ -31,11 +31,45 @@ export class ScribbleController {
     return this.scribbleService
       .getAllScribblesByUserID(pageNumber)
       .then((res) => {
-        return this.scribbleService.getAuths(res).then(auths => {
-          return this.scribbleService.getProfiles(auths).then(profiles => {
-            return profiles
-          })
-        })
+        return this.scribbleService.getAuths(res).then((auths) => {
+          return this.scribbleService.getProfiles(auths).then((profiles) => {
+            return this.scribbleService
+              .getTrendsByID(profiles)
+              .then((trends) => {
+                return this.scribbleService
+                  .getLikesByID(trends)
+                  .then((likes) => {
+                    return likes;
+                  });
+              });
+          });
+        });
+      });
+  }
+
+  @Get('/trend/:trend')
+  async getAllScribblesByTrend(@Param('trend') trend: string) {
+    trend = '#' + trend;
+    return this.scribbleService
+      .getAllScribblesByTrend(trend)
+      .then((res: any) => {
+        res.data = [...res]
+        return this.scribbleService.getAuths(res).then((auths) => {
+          return this.scribbleService.getProfiles(auths).then((profiles) => {
+            return this.scribbleService
+              .getTrendsByID(profiles)
+              .then((trends) => {
+                return this.scribbleService
+                  .getLikesByID(trends)
+                  .then((likes) => {
+                    return likes;
+                  });
+              });
+          });
+        });
+      })
+      .catch((err) => {
+        return err;
       });
   }
 }

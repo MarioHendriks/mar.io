@@ -6,4 +6,8 @@ import { TrendService } from './trend.service';
 export class TrendController {
   constructor(private readonly trendService: TrendService) {}
 
+  @Get('/trending')
+  getTrending(){
+    return this.trendService.getTrending()
+  }
 }
